@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from "styled-components";
 
 const FooterWrapper = styled.div`
@@ -30,11 +30,35 @@ const FooterWrapper = styled.div`
 `
 
 export default function Footer({pageWhite,pageActive}) {
+    const [isScroll,setScroll] = useState(false)
+
+    function scrollStop (callback, refresh = 100) {
+        // Make sure a valid callback was provided
+        if (!callback || typeof callback !== 'function') return;
+        // Setup scrolling variable
+        let isScrolling;
+        // Listen for scroll events
+        window.addEventListener('scroll', function (event) {
+            setScroll(false)
+          // Clear our timeout throughout the scroll
+          window.clearTimeout(isScrolling);
+          // Set a timeout to run after scrolling ends
+          isScrolling = setTimeout(callback, refresh);
+        }, false);
+    }
+    scrollStop(function () {
+        // console.log('Scrolling has stopped.');
+        setScroll(true)
+    });
     return (
         <FooterWrapper>
-            <div className={`footer ${pageWhite !== 1 ? "white" : ""}`}>
-                <p>{pageActive}<span>/8</span></p>
-            </div>
+            {
+                isScroll ?
+                    <div className={`footer ${pageWhite !== 1 ? "white" : ""}`}>
+                        <p>{pageActive}<span>/8</span></p>
+                    </div>
+                : ""
+            }
         </FooterWrapper>
     )
 }

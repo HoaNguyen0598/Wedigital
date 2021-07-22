@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from "styled-components";
 import CountSlideIcon from '../../image/CountSlide/CountSlide';
 
@@ -39,8 +39,31 @@ const CountSlideWrapper = styled.div`
 `
 
 export default function CountSlide({pageWhite, pageActive}) {
+    const [isScroll,setScroll] = useState(false)
+
+    function scrollStop (callback, refresh = 100) {
+        // Make sure a valid callback was provided
+        if (!callback || typeof callback !== 'function') return;
+        // Setup scrolling variable
+        let isScrolling;
+        // Listen for scroll events
+        window.addEventListener('scroll', function (event) {
+            setScroll(false)
+          // Clear our timeout throughout the scroll
+          window.clearTimeout(isScrolling);
+          // Set a timeout to run after scrolling ends
+          isScrolling = setTimeout(callback, refresh);
+        }, false);
+    }
+    scrollStop(function () {
+        // console.log('Scrolling has stopped.');
+        setScroll(true)
+    });
+
     return (
         <CountSlideWrapper>
+        {
+            isScroll ?
             <div className={`countSlide ${pageWhite !== 1 ? "white" : ""}`}>
                 {
                     pageActive === 1
@@ -88,6 +111,9 @@ export default function CountSlide({pageWhite, pageActive}) {
                     
                 }
             </div>
+            : 
+            ""
+        }
         </CountSlideWrapper>
     )
 }

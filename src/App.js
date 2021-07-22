@@ -15,9 +15,11 @@ import ProductOne from './Page/Product/ProductOne';
 import ProductTwo from './Page/Product/ProductTwo';
 import ProductThree from './Page/Product/ProductThree';
 
+
 function App() {
   const [pageWhite, setPageWhite] = useState(1)
   const [pageActive,setPageActive] = useState(1)
+
 
   useEffect(() => {
     window.addEventListener("scroll", toggleVisibility);
@@ -25,7 +27,7 @@ function App() {
 
   const toggleVisibility = () => {
 
-    console.log(window.pageXOffset)
+    // console.log(window.scrollY)
 
     if(window.scrollY === 0){
       setPageActive(1)
